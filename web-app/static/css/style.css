@@ -1,0 +1,388 @@
+/* Agent Dashboard - Feature 3: Projects Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #1a1a2e;
+    color: #eee;
+    min-height: 100vh;
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: #16213e;
+    padding: 20px;
+    border-right: 1px solid #0f3460;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar h1 {
+    font-size: 18px;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #0f3460;
+    color: #e94560;
+}
+
+.nav-item {
+    display: block;
+    padding: 12px 15px;
+    margin: 5px 0;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #aaa;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.nav-item:hover, .nav-item.active {
+    background: #0f3460;
+    color: #e94560;
+}
+
+/* Main Content */
+.main {
+    flex: 1;
+    margin-left: 260px;
+    padding: 30px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #0f3460;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #0f3460;
+    color: #eee;
+    text-decoration: none;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn:hover {
+    background: #e94560;
+}
+
+.btn-primary {
+    background: #e94560;
+}
+
+.btn-danger {
+    background: #c0392b;
+}
+
+.btn-small {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.form-input, .form-textarea, .form-select {
+    width: 100%;
+    padding: 12px;
+    background: #16213e;
+    border: 1px solid #0f3460;
+    border-radius: 6px;
+    color: #eee;
+    font-size: 14px;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+/* Alerts */
+.alert {
+    padding: 12px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+.alert-success {
+    background: rgba(39, 174, 96, 0.2);
+    border: 1px solid #27ae60;
+    color: #27ae60;
+}
+
+.alert-error {
+    background: rgba(231, 76, 60, 0.2);
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
+}
+
+/* Project Cards */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.project-card {
+    background: #16213e;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #0f3460;
+    transition: all 0.2s;
+}
+
+.project-card:hover {
+    border-color: #e94560;
+}
+
+.project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-bottom: 10px;
+}
+
+.project-header h3 {
+    font-size: 18px;
+    margin: 0;
+}
+
+.project-header h3 a {
+    color: #eee;
+    text-decoration: none;
+}
+
+.project-header h3 a:hover {
+    color: #e94560;
+}
+
+.project-goal {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.project-meta {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.badge-high {
+    background: #e74c3c;
+    color: white;
+}
+
+.badge-medium {
+    background: #f39c12;
+    color: white;
+}
+
+.badge-low {
+    background: #27ae60;
+    color: white;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
+.status-planning {
+    background: #3498db;
+    color: white;
+}
+
+.status-in_progress {
+    background: #9b59b6;
+    color: white;
+}
+
+.status-on_hold {
+    background: #e67e22;
+    color: white;
+}
+
+.status-completed {
+    background: #27ae60;
+    color: white;
+}
+
+/* Progress Bar */
+.progress-bar {
+    height: 8px;
+    background: #0f3460;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #e94560;
+    transition: width 0.3s;
+}
+
+.progress-bar-large {
+    height: 12px;
+    background: #0f3460;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+/* Project Detail */
+.project-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.project-goal-section, .project-description, .project-progress-section, .project-tasks-section {
+    background: #16213e;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.project-goal-section h4, .project-description h4, .project-progress-section h4, .project-tasks-section h4 {
+    color: #e94560;
+    margin-bottom: 10px;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+/* Project Tasks */
+.project-task-list {
+    margin-top: 15px;
+}
+
+.project-task-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: #1a1a2e;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border: 1px solid #0f3460;
+}
+
+.project-task-item.completed {
+    opacity: 0.6;
+}
+
+.project-task-item .task-text {
+    flex: 1;
+}
+
+.project-task-item .task-text.completed {
+    text-decoration: line-through;
+    color: #666;
+}
+
+.task-checkbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Project Meta Footer */
+.project-meta-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #0f3460;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #16213e;
+    border-radius: 12px;
+}
+
+.empty-state h3 {
+    margin-bottom: 10px;
+    color: #eee;
+}
+
+.empty-state p {
+    color: #888;
+    margin-bottom: 20px;
+}
+
+/* Inline Form */
+.inline-form {
+    display: inline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 200px;
+    }
+    
+    .main {
+        margin-left: 200px;
+    }
+    
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
