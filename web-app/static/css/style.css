@@ -1,4 +1,4 @@
-/* Agent Dashboard - Feature 3: Projects Styles */
+/* Agent Dashboard - Feature 2: Daily Log CRUD Styles */
 
 * {
     margin: 0;
@@ -14,7 +14,7 @@ body {
     display: flex;
 }
 
-/* Sidebar */
+/* Sidebar Navigation */
 .sidebar {
     width: 260px;
     background: #16213e;
@@ -44,9 +44,15 @@ body {
     transition: all 0.2s;
 }
 
-.nav-item:hover, .nav-item.active {
+.nav-item:hover {
+    background: #0f3460;
+    color: #eee;
+}
+
+.nav-item.active {
     background: #0f3460;
     color: #e94560;
+    font-weight: 600;
 }
 
 /* Main Content */
@@ -54,6 +60,7 @@ body {
     flex: 1;
     margin-left: 260px;
     padding: 30px;
+    min-height: 100vh;
 }
 
 header {
@@ -65,75 +72,22 @@ header {
     border-bottom: 1px solid #0f3460;
 }
 
-/* Buttons */
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    background: #0f3460;
+header h2 {
+    font-size: 28px;
     color: #eee;
-    text-decoration: none;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
+}
+
+.date {
+    color: #888;
     font-size: 14px;
-    transition: all 0.2s;
-}
-
-.btn:hover {
-    background: #e94560;
-}
-
-.btn-primary {
-    background: #e94560;
-}
-
-.btn-danger {
-    background: #c0392b;
-}
-
-.btn-small {
-    padding: 5px 10px;
-    font-size: 12px;
-}
-
-/* Forms */
-.form-group {
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 8px;
-    color: #aaa;
-    font-size: 14px;
-}
-
-.form-input, .form-textarea, .form-select {
-    width: 100%;
-    padding: 12px;
-    background: #16213e;
-    border: 1px solid #0f3460;
-    border-radius: 6px;
-    color: #eee;
-    font-size: 14px;
-}
-
-.form-textarea {
-    resize: vertical;
-    min-height: 100px;
-}
-
-.form-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 30px;
 }
 
 /* Alerts */
 .alert {
     padding: 12px 20px;
-    border-radius: 6px;
+    border-radius: 8px;
     margin-bottom: 20px;
+    font-size: 14px;
 }
 
 .alert-success {
@@ -148,225 +102,298 @@ header {
     color: #e74c3c;
 }
 
-/* Project Cards */
-.projects-grid {
+/* Stats Grid */
+.stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 20px;
+    margin-bottom: 30px;
 }
 
-.project-card {
+.stat-card {
     background: #16213e;
+    padding: 25px;
     border-radius: 12px;
-    padding: 20px;
     border: 1px solid #0f3460;
-    transition: all 0.2s;
+    text-align: center;
+    transition: transform 0.2s;
 }
 
-.project-card:hover {
+.stat-card:hover {
+    transform: translateY(-2px);
     border-color: #e94560;
 }
 
-.project-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: start;
-    margin-bottom: 10px;
-}
-
-.project-header h3 {
-    font-size: 18px;
-    margin: 0;
-}
-
-.project-header h3 a {
-    color: #eee;
-    text-decoration: none;
-}
-
-.project-header h3 a:hover {
+.stat-number {
+    font-size: 42px;
+    font-weight: bold;
     color: #e94560;
-}
-
-.project-goal {
-    color: #888;
-    font-size: 14px;
-    margin-bottom: 15px;
-}
-
-.project-meta {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.badge {
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    text-transform: uppercase;
-}
-
-.badge-high {
-    background: #e74c3c;
-    color: white;
-}
-
-.badge-medium {
-    background: #f39c12;
-    color: white;
-}
-
-.badge-low {
-    background: #27ae60;
-    color: white;
-}
-
-.status-badge {
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    text-transform: capitalize;
-}
-
-.status-planning {
-    background: #3498db;
-    color: white;
-}
-
-.status-in_progress {
-    background: #9b59b6;
-    color: white;
-}
-
-.status-on_hold {
-    background: #e67e22;
-    color: white;
-}
-
-.status-completed {
-    background: #27ae60;
-    color: white;
-}
-
-/* Progress Bar */
-.progress-bar {
-    height: 8px;
-    background: #0f3460;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-bottom: 5px;
-}
-
-.progress-fill {
-    height: 100%;
-    background: #e94560;
-    transition: width 0.3s;
-}
-
-.progress-bar-large {
-    height: 12px;
-    background: #0f3460;
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 10px;
-}
-
-/* Project Detail */
-.project-detail-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.header-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.project-goal-section, .project-description, .project-progress-section, .project-tasks-section {
-    background: #16213e;
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-
-.project-goal-section h4, .project-description h4, .project-progress-section h4, .project-tasks-section h4 {
-    color: #e94560;
-    margin-bottom: 10px;
-    font-size: 14px;
-    text-transform: uppercase;
-}
-
-/* Project Tasks */
-.project-task-list {
-    margin-top: 15px;
-}
-
-.project-task-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px;
-    background: #1a1a2e;
-    border-radius: 6px;
     margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 13px;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: #16213e;
+    padding: 25px;
+    border-radius: 12px;
     border: 1px solid #0f3460;
 }
 
-.project-task-item.completed {
-    opacity: 0.6;
+.card h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #eee;
 }
 
-.project-task-item .task-text {
-    flex: 1;
+.task-list {
+    list-style: none;
+    margin-bottom: 20px;
 }
 
-.project-task-item .task-text.completed {
+.task-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #0f3460;
+    color: #ccc;
+    font-size: 14px;
+}
+
+.task-list li:last-child {
+    border-bottom: none;
+}
+
+.task-list.completed li {
     text-decoration: line-through;
     color: #666;
 }
 
-.task-checkbox {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-}
-
-/* Project Meta Footer */
-.project-meta-footer {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #0f3460;
-    font-size: 12px;
+.empty {
     color: #666;
+    font-style: italic;
+    padding: 20px 0;
 }
 
-/* Empty State */
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background: #e94560;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #ff6b6b;
+}
+
+.btn-success {
+    background: #27ae60;
+    color: white;
+}
+
+.btn-danger {
+    background: #e74c3c;
+    color: white;
+}
+
+.btn-small {
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+/* Add Task Section */
+.add-task-section {
+    background: #16213e;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #0f3460;
+    margin-bottom: 30px;
+}
+
+.add-task-form {
+    display: flex;
+    gap: 10px;
+}
+
+.task-input {
+    flex: 1;
+    padding: 12px 15px;
+    background: #1a1a2e;
+    border: 1px solid #0f3460;
+    border-radius: 6px;
+    color: #eee;
+    font-size: 14px;
+}
+
+.task-input:focus {
+    outline: none;
+    border-color: #e94560;
+}
+
+.section-select {
+    padding: 12px 15px;
+    background: #1a1a2e;
+    border: 1px solid #0f3460;
+    border-radius: 6px;
+    color: #eee;
+    font-size: 14px;
+    min-width: 150px;
+}
+
+/* Log Columns */
+.log-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.log-column {
     background: #16213e;
     border-radius: 12px;
+    border: 1px solid #0f3460;
+    overflow: hidden;
 }
 
-.empty-state h3 {
-    margin-bottom: 10px;
+.log-column h3 {
+    padding: 15px 20px;
+    background: #0f3460;
+    font-size: 14px;
     color: #eee;
 }
 
-.empty-state p {
-    color: #888;
-    margin-bottom: 20px;
+.task-container {
+    padding: 15px;
+    min-height: 200px;
 }
 
-/* Inline Form */
+.task-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #1a1a2e;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    border: 1px solid #0f3460;
+}
+
+.task-item.completed {
+    opacity: 0.6;
+}
+
+.task-text {
+    flex: 1;
+    font-size: 14px;
+    color: #ccc;
+    margin-right: 10px;
+}
+
+.task-actions {
+    display: flex;
+    gap: 5px;
+}
+
 .inline-form {
     display: inline;
 }
 
+/* History */
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.history-card {
+    background: #16213e;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #0f3460;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.history-header h3 {
+    font-size: 16px;
+    color: #eee;
+}
+
+.history-stats {
+    display: flex;
+    gap: 10px;
+}
+
+.badge {
+    padding: 4px 10px;
+    background: #0f3460;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #aaa;
+}
+
+.history-completed h4 {
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 10px;
+}
+
+.history-completed ul {
+    list-style: none;
+}
+
+.history-completed li {
+    padding: 5px 0;
+    color: #666;
+    font-size: 13px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px;
+}
+
 /* Responsive */
+@media (max-width: 1200px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .log-columns {
+        grid-template-columns: 1fr;
+    }
+    
+    .dashboard-content {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 768px) {
     .sidebar {
         width: 200px;
@@ -376,13 +403,11 @@ header {
         margin-left: 200px;
     }
     
-    .projects-grid {
+    .stats-grid {
         grid-template-columns: 1fr;
     }
     
-    header {
+    .add-task-form {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
     }
 }

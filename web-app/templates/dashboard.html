@@ -12,6 +12,7 @@
         <a href="{{ url_for('dashboard') }}" class="nav-item active">📊 Dashboard</a>
         <a href="{{ url_for('daily_log') }}" class="nav-item">📝 Daily Log</a>
         <a href="{{ url_for('projects_list') }}" class="nav-item">📁 Projects</a>
+        <a href="{{ url_for('completed_archive') }}" class="nav-item">✅ Completed</a>
         <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
     </nav>
     
@@ -31,20 +32,20 @@
         
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number">{{ today_log.doing|length }}</div>
                 <div class="stat-label">Currently Doing</div>
+                <div class="stat-number">{{ today_log.doing|length }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ today_log.completed|length }}</div>
                 <div class="stat-label">Completed Today</div>
+                <div class="stat-number">{{ today_log.completed|length }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ active_projects }}</div>
                 <div class="stat-label">Active Projects</div>
+                <div class="stat-number">{{ active_projects }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ total_completed }}</div>
                 <div class="stat-label">Total Completed</div>
+                <div class="stat-number">{{ total_completed }}</div>
             </div>
         </div>
         
