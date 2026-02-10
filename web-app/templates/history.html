@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History - Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>🤖 Agent Dashboard</h1>
+        <a href="{{ url_for('dashboard') }}" class="nav-item">📊 Dashboard</a>
+        <a href="{{ url_for('daily_log') }}" class="nav-item">📝 Daily Log</a>
+        <a href="{{ url_for('log_history') }}" class="nav-item active">📚 History</a>
+    </nav>
+    
+    <main class="main">
+        <header>
+            <h2>Daily Log History</h2>
+            <span class="date">{{ logs|length }} days recorded</span>
+        </header>
+        
+        {% if logs %}
+            <div class="history-list">
+                {% for date, log in logs.items() %}
+                <div class="history-card">
+                    <div class="history-header">
+                        <h3>{{ date }}</h3>
+                        <div class="history-stats">
+                            <span class="badge">{{ log.doing|length }} doing</span>
+                            <span class="badge">{{ log.completed|length }} done</span>
+                            <span class="badge">{{ log.next|length }} next</span>
+                        </div>
+                    </div>
+                    
+                    {% if log.completed %}
+                    <div class="history-completed">
+                        <h4>Completed:</h4>
+                        <ul>
+                            {% for task in log.completed %}
+                            <li>{{ task }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>No history yet. Start logging your work!</p>
+                <a href="{{ url_for('daily_log') }}" class="btn">Go to Daily Log</a>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>

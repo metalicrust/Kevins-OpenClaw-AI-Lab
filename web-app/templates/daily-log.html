@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Log - Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>🤖 Agent Dashboard</h1>
+        <a href="{{ url_for('dashboard') }}" class="nav-item">📊 Dashboard</a>
+        <a href="{{ url_for('daily_log') }}" class="nav-item active">📝 Daily Log</a>
+        <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
+    </nav>
+    
+    <main class="main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <header>
+            <h2>Daily Log</h2>
+            <span class="date">{{ today }}</span>
+        </header>
+        
+        <!-- Add Task Form -->
+        <div class="add-task-section">
+            <form action="{{ url_for('add_task') }}" method="POST" class="add-task-form">
+                <input type="text" name="task" placeholder="Add a new task..." required class="task-input">
+                <select name="section" class="section-select">
+                    <option value="doing">Currently Doing</option>
+                    <option value="next">Up Next</option>
+                    <option value="completed">Completed</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Add Task</button>
+            </form>
+        </div>
+        
+        <div class="log-columns">
+            <!-- Currently Doing -->
+            <div class="log-column">
+                <h3>🎯 Currently Doing ({{ log.doing|length }})</h3>
+                <div class="task-container">
+                    {% if log.doing %}
+                        {% for task in log.doing %}
+                        <div class="task-item">
+                            <span class="task-text">{{ task }}</span>
+                            <div class="task-actions">
+                                <form action="{{ url_for('move_task') }}" method="POST" class="inline-form">
+                                    <input type="hidden" name="task" value="{{ task }}">
+                                    <input type="hidden" name="from_section" value="doing">
+                                    <input type="hidden" name="to_section" value="completed">
+                                    <button type="submit" class="btn-small btn-success" title="Mark Complete">✓</button>
+                                </form>
+                                <form action="{{ url_for('delete_task') }}" method="POST" class="inline-form">
+                                    <input type="hidden" name="task" value="{{ task }}">
+                                    <input type="hidden" name="section" value="doing">
+                                    <button type="submit" class="btn-small btn-danger" title="Delete">×</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty">No active tasks</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Up Next -->
+            <div class="log-column">
+                <h3>⏭️ Up Next ({{ log.next|length }})</h3>
+                <div class="task-container">
+                    {% if log.next %}
+                        {% for task in log.next %}
+                        <div class="task-item">
+                            <span class="task-text">{{ task }}</span>
+                            <div class="task-actions">
+                                <form action="{{ url_for('move_task') }}" method="POST" class="inline-form">
+                                    <input type="hidden" name="task" value="{{ task }}">
+                                    <input type="hidden" name="from_section" value="next">
+                                    <input type="hidden" name="to_section" value="doing">
+                                    <button type="submit" class="btn-small btn-primary" title="Start Doing">▶</button>
+                                </form>
+                                <form action="{{ url_for('delete_task') }}" method="POST" class="inline-form">
+                                    <input type="hidden" name="task" value="{{ task }}">
+                                    <input type="hidden" name="section" value="next">
+                                    <button type="submit" class="btn-small btn-danger" title="Delete">×</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty">No upcoming tasks</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Completed -->
+            <div class="log-column">
+                <h3>✅ Completed ({{ log.completed|length }})</h3>
+                <div class="task-container completed-container">
+                    {% if log.completed %}
+                        {% for task in log.completed %}
+                        <div class="task-item completed">
+                            <span class="task-text">{{ task }}</span>
+                            <div class="task-actions">
+                                <form action="{{ url_for('move_task') }}" method="POST" class="inline-form">
+                                    <input type="hidden" name="task" value="{{ task }}">
+                                    <input type="hidden" name="from_section" value="completed">
+                                    <input type="hidden" name="to_section" value="doing">
+                                    <button type="submit" class="btn-small" title="Move Back">↩</button>
+                                </form>
+                                <form action="{{ url_for('delete_task') }}" method="POST" class="inline-form">
+                                    <input type="hidden" name="task" value="{{ task }}">
+                                    <input type="hidden" name="section" value="completed">
+                                    <button type="submit" class="btn-small btn-danger" title="Delete">×</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="empty">No completed tasks yet</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
