@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit {{ project.name }} - Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>🤖 Agent Dashboard</h1>
+        <a href="{{ url_for('dashboard') }}" class="nav-item">📊 Dashboard</a>
+        <a href="{{ url_for('daily_log') }}" class="nav-item">📝 Daily Log</a>
+        <a href="{{ url_for('projects_list') }}" class="nav-item active">📁 Projects</a>
+        <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
+    </nav>
+    
+    <main class="main">
+        <header>
+            <h2>Edit Project</h2>
+        </header>
+        
+        <form action="{{ url_for('project_edit', project_id=project.id) }}" method="POST" class="project-form">
+            <div class="form-group">
+                <label>Project Name *</label>
+                <input type="text" name="name" value="{{ project.name }}" required class="form-input">
+            </div>
+            
+            <div class="form-group">
+                <label>Goal</label>
+                <input type="text" name="goal" value="{{ project.goal or '' }}" class="form-input">
+            </div>
+            
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" rows="4" class="form-textarea">{{ project.description or '' }}</textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Status</label>
+                <select name="status" class="form-select">
+                    <option value="planning" {% if project.status == 'planning' %}selected{% endif %}>📋 Planning</option>
+                    <option value="in_progress" {% if project.status == 'in_progress' %}selected{% endif %}>🔄 In Progress</option>
+                    <option value="on_hold" {% if project.status == 'on_hold' %}selected{% endif %}>⏸️ On Hold</option>
+                    <option value="completed" {% if project.status == 'completed' %}selected{% endif %}>✅ Completed</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Priority</label>
+                <select name="priority" class="form-select">
+                    <option value="high" {% if project.priority == 'high' %}selected{% endif %}>🔴 High</option>
+                    <option value="medium" {% if project.priority == 'medium' %}selected{% endif %}>🟡 Medium</option>
+                    <option value="low" {% if project.priority == 'low' %}selected{% endif %}>🟢 Low</option>
+                </select>
+            </div>
+            
+            <div class="form-actions">
+                <a href="{{ url_for('project_detail', project_id=project.id) }}" class="btn">Cancel</a>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

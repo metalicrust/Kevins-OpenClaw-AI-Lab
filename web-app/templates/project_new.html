@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Project - Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>🤖 Agent Dashboard</h1>
+        <a href="{{ url_for('dashboard') }}" class="nav-item">📊 Dashboard</a>
+        <a href="{{ url_for('daily_log') }}" class="nav-item">📝 Daily Log</a>
+        <a href="{{ url_for('projects_list') }}" class="nav-item active">📁 Projects</a>
+        <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
+    </nav>
+    
+    <main class="main">
+        <header>
+            <h2>New Project</h2>
+        </header>
+        
+        <form action="{{ url_for('project_new') }}" method="POST" class="project-form">
+            <div class="form-group">
+                <label>Project Name *</label>
+                <input type="text" name="name" required placeholder="What are you building?" class="form-input">
+            </div>
+            
+            <div class="form-group">
+                <label>Goal</label>
+                <input type="text" name="goal" placeholder="What's the end goal?" class="form-input">
+            </div>
+            
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" rows="4" placeholder="More details about the project..." class="form-textarea"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Priority</label>
+                <select name="priority" class="form-select">
+                    <option value="high">🔴 High</option>
+                    <option value="medium" selected>🟡 Medium</option>
+                    <option value="low">🟢 Low</option>
+                </select>
+            </div>
+            
+            <div class="form-actions">
+                <a href="{{ url_for('projects_list') }}" class="btn">Cancel</a>
+                <button type="submit" class="btn btn-primary">Create Project</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
