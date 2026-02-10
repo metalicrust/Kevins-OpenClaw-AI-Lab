@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="sidebar">
+        <h1>🤖 Agent Dashboard</h1>
+        <nav>
+            <a href="/" class="nav-item active">📊 Dashboard</a>
+            <a href="/daily-log" class="nav-item">📝 Daily Log</a>
+            <a href="#" class="nav-item">📁 Projects</a>
+            <a href="#" class="nav-item">✅ Completed</a>
+        </nav>
+    </div>
+    
+    <div class="main">
+        <header>
+            <h2>Dashboard</h2>
+            <span class="date">{{ today }}</span>
+        </header>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>What I'm Doing</h3>
+                <div class="count">{{ today_log.doing|length }}</div>
+                <p>active tasks</p>
+            </div>
+            <div class="stat-card">
+                <h3>Completed Today</h3>
+                <div class="count">{{ today_log.completed|length }}</div>
+                <p>tasks done</p>
+            </div>
+            <div class="stat-card">
+                <h3>Active Projects</h3>
+                <div class="count">{{ projects|length }}</div>
+                <p>in progress</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Completed</h3>
+                <div class="count">{{ completed_count }}</div>
+                <p>all time</p>
+            </div>
+        </div>
+        
+        <div class="content-section">
+            <h3>Currently Working On</h3>
+            {% if today_log.doing %}
+                <ul class="task-list">
+                {% for task in today_log.doing %}
+                    <li>{{ task }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="empty">No active tasks. Add some!</p>
+            {% endif %}
+        </div>
+        
+        <div class="content-section">
+            <h3>Next Up</h3>
+            {% if today_log.next %}
+                <ul class="task-list">
+                {% for task in today_log.next %}
+                    <li>{{ task }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <p class="empty">No upcoming tasks.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
