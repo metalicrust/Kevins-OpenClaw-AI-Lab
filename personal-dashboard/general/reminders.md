@@ -1,6 +1,6 @@
 # 🎯 Personal Reminders - Kevin
 
-**Last Updated:** 2026-02-09  
+**Last Updated:** 2026-02-10  
 **Timezone:** America/Los_Angeles (PST)
 
 ---
@@ -41,6 +41,7 @@
 | Date | Day | Event | Notes |
 |------|-----|-------|-------|
 | Feb 10 | Mon | Movie night | Gilroy |
+| Feb 12 | Wed | **Drop off Toyota Sienna at Autoworks** | **Before 9:00 AM** |
 | Feb 12 | Wed | Movie night | Gilroy |
 | Feb 12 | Wed | Content due | MindMorsels Slot 1 |
 | Feb 15 | Sun | Weekly review | Health + Content + Crypto |

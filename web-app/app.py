@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Agent Dashboard Web App - Feature 2: Daily Log CRUD
-Tracks agent work with full CRUD operations
+Agent Dashboard Web App - Feature 4: Completed Tasks Archive
+Tracks agent work with archive, statistics, and search
 """
 
 import json
@@ -139,7 +139,93 @@ def log_history():
     sorted_logs = dict(sorted(logs.items(), reverse=True))
     return render_template('history.html', logs=sorted_logs)
 
+@app.route('/completed')
+def completed_archive():
+    """View all completed tasks archive"""
+    logs = load_daily_logs()
+    
+    # Gather all completed tasks with dates
+    all_completed = []
+    for date, log in logs.items():
+        for task in log.get('completed', []):
+            all_completed.append({
+                'date': date,
+                'task': task,
+                'day_of_week': datetime.strptime(date, '%Y-%m-%d').strftime('%A')
+            })
+    
+    # Sort by date descending
+    all_completed.sort(key=lambda x: x['date'], reverse=True)
+    
+    # Calculate statistics
+    total_tasks = len(all_completed)
+    
+    # This week
+    today = datetime.now()
+    week_start = today - timedelta(days=today.weekday())
+    this_week = [t for t in all_completed if datetime.strptime(t['date'], '%Y-%m-%d') >= week_start]
+    
+    # This month
+    month_start = today.replace(day=1)
+    this_month = [t for t in all_completed if datetime.strptime(t['date'], '%Y-%m-%d') >= month_start]
+    
+    # Group by date for display
+    grouped = {}
+    for task in all_completed:
+        date = task['date']
+        if date not in grouped:
+            grouped[date] = []
+        grouped[date].append(task)
+    
+    return render_template('completed.html',
+                         completed_tasks=all_completed,
+                         grouped_tasks=grouped,
+                         total=total_tasks,
+                         this_week_count=len(this_week),
+                         this_month_count=len(this_month),
+                         this_week_tasks=this_week[:10],  # Last 10 for preview
+                         today=today.strftime('%Y-%m-%d'))
+
+@app.route('/completed/search')
+def search_completed():
+    """Search completed tasks"""
+    query = request.args.get('q', '').lower()
+    logs = load_daily_logs()
+    
+    results = []
+    for date, log in logs.items():
+        for task in log.get('completed', []):
+            if query in task.lower():
+                results.append({
+                    'date': date,
+                    'task': task,
+                    'day_of_week': datetime.strptime(date, '%Y-%m-%d').strftime('%A')
+                })
+    
+    results.sort(key=lambda x: x['date'], reverse=True)
+    
+    return render_template('completed_search.html',
+                         results=results,
+                         query=query,
+                         count=len(results))
+
+@app.route('/api/stats')
+def api_stats():
+    """API endpoint for statistics"""
+    logs = load_daily_logs()
+    
+    # Daily completion counts for last 30 days
+    today = datetime.now()
+    daily_stats = []
+    
+    for i in range(30):
+        date = (today - timedelta(days=i)).strftime('%Y-%m-%d')
+        count = len(logs.get(date, {}).get('completed', []))
+        daily_stats.append({'date': date, 'count': count})
+    
+    return {'daily_stats': daily_stats}
+
 if __name__ == '__main__':
-    print("🚀 Agent Dashboard - Feature 2: Daily Log CRUD")
+    print("🚀 Agent Dashboard - Feature 4: Completed Tasks Archive")
     print("📱 Open http://localhost:5051")
     app.run(host='localhost', port=5051, debug=True)

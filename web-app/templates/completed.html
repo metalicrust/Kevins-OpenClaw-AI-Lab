@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Tasks Archive - Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>🤖 Agent Dashboard</h1>
+        <a href="{{ url_for('dashboard') }}" class="nav-item">📊 Dashboard</a>
+        <a href="{{ url_for('daily_log') }}" class="nav-item">📝 Daily Log</a>
+        <a href="#" class="nav-item">📁 Projects</a>
+        <a href="{{ url_for('completed_archive') }}" class="nav-item active">✅ Completed</a>
+        <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
+    </nav>
+    
+    <main class="main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <header>
+            <h2>Completed Tasks Archive</h2>
+            <span class="date">{{ total }} tasks completed</span>
+        </header>
+        
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Total Completed</div>
+                <div class="stat-number">{{ total }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">This Week</div>
+                <div class="stat-number">{{ this_week_count }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">This Month</div>
+                <div class="stat-number">{{ this_month_count }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Daily Average</div>
+                <div class="stat-number">{{ (total / 30)|round(1) }}</div>
+            </div>
+        </div>
+        
+        <!-- Search -->
+        <div class="search-section">
+            <form action="{{ url_for('search_completed') }}" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Search completed tasks..." class="search-input">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="content-section">
+            <h3>📈 Recent Activity (This Week)</h3>
+            {% if this_week_tasks %}
+                <div class="activity-list">
+                    {% for task in this_week_tasks %}
+                    <div class="activity-item">
+                        <span class="activity-date">{{ task.date }} ({{ task.day_of_week }})</span>
+                        <span class="activity-task">{{ task.task }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty">No completed tasks this week yet.</p>
+            {% endif %}
+        </div>
+        
+        <!-- All Completed by Date -->
+        <div class="content-section">
+            <h3>📅 All Completed Tasks by Date</h3>
+            {% if grouped_tasks %}
+                {% for date, tasks in grouped_tasks.items() %}
+                <div class="date-group">
+                    <h4>{{ date }} ({{ tasks[0].day_of_week }}) - {{ tasks|length }} tasks</h4>
+                    <ul class="task-list completed-list">
+                        {% for task in tasks %}
+                        <li>{{ task.task }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty">No completed tasks yet. Start completing some work!</p>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>
