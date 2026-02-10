@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>🤖 Agent Dashboard</h1>
+        <a href="{{ url_for('dashboard') }}" class="nav-item active">📊 Dashboard</a>
+        <a href="{{ url_for('daily_log') }}" class="nav-item">📝 Daily Log</a>
+        <a href="{{ url_for('projects_list') }}" class="nav-item">📁 Projects</a>
+        <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
+    </nav>
+    
+    <main class="main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <header>
+            <h2>Dashboard</h2>
+            <span class="date">{{ today }}</span>
+        </header>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ today_log.doing|length }}</div>
+                <div class="stat-label">Currently Doing</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ today_log.completed|length }}</div>
+                <div class="stat-label">Completed Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ active_projects }}</div>
+                <div class="stat-label">Active Projects</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ total_completed }}</div>
+                <div class="stat-label">Total Completed</div>
+            </div>
+        </div>
+        
+        <div class="dashboard-content">
+            <div class="card">
+                <h3>🎯 What I'm Doing Now</h3>
+                {% if today_log.doing %}
+                    <ul class="task-list">
+                    {% for task in today_log.doing %}
+                        <li>{{ task }}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="empty">No active tasks. Add some in Daily Log!</p>
+                {% endif %}
+                <a href="{{ url_for('daily_log') }}" class="btn">Manage Tasks →</a>
+            </div>
+            
+            <div class="card">
+                <h3>📁 Recent Projects</h3>
+                {% if recent_projects %}
+                    {% for project in recent_projects %}
+                    <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #0f3460;">
+                        <a href="{{ url_for('project_detail', project_id=project.id) }}" style="color: #eee; text-decoration: none; font-weight: 600;">{{ project.name }}</a>
+                        <span class="badge badge-{{ project.priority }}" style="margin-left: 10px;">{{ project.priority }}</span>
+                        <p style="color: #888; font-size: 13px; margin-top: 5px;">{{ project.goal or 'No goal set' }}</p>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="empty">No projects yet. Create one!</p>
+                {% endif %}
+                <a href="{{ url_for('projects_list') }}" class="btn">View All Projects →</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

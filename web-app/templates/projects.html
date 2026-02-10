@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>🤖 Agent Dashboard</h1>
+        <a href="{{ url_for('dashboard') }}" class="nav-item">📊 Dashboard</a>
+        <a href="{{ url_for('daily_log') }}" class="nav-item">📝 Daily Log</a>
+        <a href="{{ url_for('projects_list') }}" class="nav-item active">📁 Projects</a>
+        <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
+    </nav>
+    
+    <main class="main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <header>
+            <h2>Active Projects</h2>
+            <a href="{{ url_for('project_new') }}" class="btn btn-primary">+ New Project</a>
+        </header>
+        
+        {% if projects %}
+            <div class="projects-grid">
+                {% for project in projects %}
+                <div class="project-card status-{{ project.status }}">
+                    <div class="project-header">
+                        <h3><a href="{{ url_for('project_detail', project_id=project.id) }}">{{ project.name }}</a></h3>
+                        <span class="badge badge-{{ project.priority }}">{{ project.priority }}</span>
+                    </div>
+                    
+                    <p class="project-goal">{{ project.goal or 'No goal set' }}</p>
+                    
+                    <div class="project-meta">
+                        <span class="status-badge status-{{ project.status }}">{{ project.status.replace('_', ' ') }}</span>
+                        <span class="task-count">{{ project.tasks|length }} tasks</span>
+                    </div>
+                    
+                    <div class="project-progress">
+                        {% set completed = project.tasks | selectattr('completed', 'equalto', true) | list | length %}
+                        {% set total = project.tasks | length %}
+                        {% if total > 0 %}
+                            {% set percent = (completed / total * 100) | int %}
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: {{ percent }}%"></div>
+                            </div>
+                            <span class="progress-text">{{ completed }}/{{ total }} ({{ percent }}%)</span>
+                        {% else %}
+                            <p class="empty">No tasks yet</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <h3>No projects yet</h3>
+                <p>Create your first project to start tracking work.</p>
+                <a href="{{ url_for('project_new') }}" class="btn btn-primary">Create Project</a>
+            </div>
+        {% endif %}
+    </main>
+</body>
+</html>
