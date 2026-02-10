@@ -40,6 +40,7 @@
 ### This Week
 | Date | Day | Event | Notes |
 |------|-----|-------|-------|
+| Feb 10 | Mon | **Pick up prescriptions** | ⏳ **TODAY** |
 | Feb 10 | Mon | Movie night | Gilroy |
 | Feb 12 | Wed | Movie night | Gilroy |
 | Feb 12 | Wed | Content due | MindMorsels Slot 1 |
