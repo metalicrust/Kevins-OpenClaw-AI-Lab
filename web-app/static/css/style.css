@@ -507,6 +507,40 @@ header h2 {
     color: #eee;
 }
 
+/* Priority Queue Styles */
+.priority-queue {
+    background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+    border: 2px solid #e94560;
+    margin-bottom: 30px;
+}
+
+.priority-queue h3 {
+    color: #e94560;
+}
+
+.priority-list {
+    list-style: none;
+}
+
+.priority-list li {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background: #1a1a2e;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border: 1px solid #0f3460;
+}
+
+.priority-dot {
+    width: 10px;
+    height: 10px;
+    background: #f39c12;
+    border-radius: 50%;
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
     .stats-grid {

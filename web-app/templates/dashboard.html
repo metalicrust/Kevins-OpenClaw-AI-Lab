@@ -50,9 +50,24 @@
             </div>
         </div>
         
+        <!-- Priority Queue - What's Next -->
+        <div class="card priority-queue">
+            <h3>⏭️ Priority Queue - What's Next</h3>
+            {% if today_log.next %}
+                <ul class="task-list priority-list">
+                {% for task in today_log.next %}
+                    <li><span class="priority-dot"></span>{{ task }}</li>
+                {% endfor %}
+                </ul>
+                <p style="color: #888; font-size: 13px; margin-top: 10px;">{{ today_log.next|length }} task(s) queued</p>
+            {% else %}
+                <p class="empty">No tasks in queue. Ready for new assignments!</p>
+            {% endif %}
+        </div>
+        
         <div class="dashboard-content">
             <div class="card">
-                <h3>🎯 What I'm Doing Now for Kevin</h3>
+                <h3>🎯 Currently Working On</h3>
                 {% if today_log.doing %}
                     <ul class="task-list">
                     {% for task in today_log.doing %}
@@ -60,13 +75,13 @@
                     {% endfor %}
                     </ul>
                 {% else %}
-                    <p class="empty">No active tasks. Waiting for instructions!</p>
+                    <p class="empty">No active tasks. Pull from Priority Queue!</p>
                 {% endif %}
                 <a href="{{ url_for('daily_log') }}" class="btn">View My Work Log →</a>
             </div>
             
             <div class="card">
-                <h3>📁 Projects I'm Working On</h3>
+                <h3>📁 Active Projects</h3>
                 {% if recent_projects %}
                     {% for project in recent_projects %}
                     <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #0f3460;">
