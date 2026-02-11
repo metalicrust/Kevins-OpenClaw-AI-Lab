@@ -86,6 +86,9 @@ web-app/
 | `/projects/<id>/tasks/<idx>/toggle` | POST | Toggle task completion |
 | `/completed` | GET | Completed tasks archive |
 | `/completed/search` | GET/POST | Search completed tasks |
+| `/usage` | GET | API usage dashboard |
+| `/usage/log` | POST | Log API usage |
+| `/usage/thresholds` | POST | Update thresholds |
 
 ## Key Functions
 
@@ -99,14 +102,54 @@ save_projects(projects) # Save projects
 get_or_create_today_log() # Get/create today's log
 ```
 
-### Template Helpers
+### Usage Data Model
+
+```json
+{
+  "tasks": {
+    "REF-001": [
+      {
+        "timestamp": "2026-02-10T20:00:00",
+        "tokens_in": 1000,
+        "tokens_out": 500,
+        "model": "moonshot/kimi-k2.5",
+        "cost": 0.006
+      }
+    ]
+  },
+  "daily_totals": {
+    "2026-02-10": {
+      "tokens": 1500,
+      "cost": 0.006
+    }
+  },
+  "thresholds": {
+    "daily": 5.0,
+    "task": 1.0
+  }
+}
+```
+
+### Usage Functions
 
 ```python
-# Dashboard context
-today_log      # Today's log entry
-total_completed # All-time completed count
-active_projects # Number of active projects
-recent_projects # Last 5 updated projects
+load_usage()                    # Load usage data
+save_usage(usage)              # Save usage data
+estimate_cost(tokens_in, tokens_out, model)  # Calculate cost
+log_task_usage(task_ref, tokens_in, tokens_out, model)  # Log usage
+get_task_usage_summary(task_ref)  # Get summary for task
+check_thresholds()             # Check if thresholds crossed
+```
+
+### Model Pricing
+
+```python
+MODEL_PRICING = {
+    'moonshot/kimi-k2.5': {'input': 0.002, 'output': 0.008},
+    'openai/gpt-4o': {'input': 0.005, 'output': 0.015},
+    'openai/gpt-4o-mini': {'input': 0.00015, 'output': 0.0006},
+    'default': {'input': 0.002, 'output': 0.008}
+}
 ```
 
 ## Styling
@@ -144,12 +187,16 @@ python app.py
 
 ## Future Enhancements
 
-- [ ] API usage tracking per task
-- [ ] Cost estimation and budget alerts
+- [x] API usage tracking per task ✓ (Completed v1.2)
+- [x] Cost estimation and budget alerts ✓ (Completed v1.2)
+- [ ] Automatic usage logging (integrate with OpenClaw API)
 - [ ] Export data to CSV/JSON
 - [ ] Integration with external calendars
 - [ ] Mobile app version
 - [ ] Real-time notifications
+- [ ] Task reference numbers (REF-XXX)
+- [ ] Priority queue reordering
+- [ ] Stop button for active tasks
 
 ## Git Workflow
 

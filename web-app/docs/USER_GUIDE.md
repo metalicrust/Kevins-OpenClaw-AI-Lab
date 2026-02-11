@@ -111,6 +111,58 @@ History of today's completed work with timestamps.
 
 ---
 
+## API Usage & Cost Tracking
+
+**URL:** http://localhost:5051/usage
+
+Track API token usage and costs per task. Helps monitor AI spending and stay within budget.
+
+### Dashboard Overview:
+- **Today's Tokens** - Total tokens used today
+- **Today's Cost** - Estimated cost for today
+- **Daily Threshold** - Warning limit for daily spending
+- **Task Threshold** - Warning limit per task
+
+### Task Usage Summary:
+Shows each task with:
+- Number of API calls
+- Total tokens used
+- Total cost (with color coding: green=under threshold, red=over)
+- AI models used
+
+### Daily History:
+View usage for the last 30 days:
+- Date
+- Total tokens
+- Total cost
+
+### Logging Usage:
+Manually log API usage for a task:
+1. Enter **Task Reference** (e.g., REF-002)
+2. Enter **Input Tokens** (tokens sent to API)
+3. Enter **Output Tokens** (tokens received from API)
+4. Select **AI Model** used
+5. Click "Log Usage"
+
+### Threshold Settings:
+Configure warning limits:
+- **Daily Limit** - Total daily budget (default: $5.00)
+- **Per-Task Limit** - Max cost per task (default: $1.00)
+
+Warnings appear at:
+- 80% of threshold (orange)
+- 100% of threshold (red)
+
+### Model Pricing:
+Current pricing (per 1,000 tokens):
+| Model | Input | Output |
+|-------|-------|--------|
+| Kimi K2.5 | $0.002 | $0.008 |
+| GPT-4o | $0.005 | $0.015 |
+| GPT-4o-mini | $0.00015 | $0.0006 |
+
+---
+
 ## Workflow Example
 
 ### Kevin assigns work:
@@ -136,6 +188,7 @@ All data is stored in JSON files:
 
 - `data/daily_logs.json` - Daily task logs
 - `data/projects.json` - Project data
+- `data/usage.json` - API usage and cost data
 
 **Backup:** Copy these files to backup your data.
 
@@ -157,4 +210,19 @@ For issues or feature requests, add a task to the Priority Queue with details.
 ---
 
 *Last Updated: 2026-02-10*  
-*Dashboard Version: 1.0*
+*Dashboard Version: 1.2*
+
+## Changelog
+
+### v1.2 (2026-02-10)
+- Added API Usage & Cost Tracking
+- Task reference numbers (REF-XXX)
+- Automatic next-task workflow
+
+### v1.1 (2026-02-10)
+- Added Documentation & User Guide
+- Technical documentation
+
+### v1.0 (2026-02-10)
+- Initial release
+- Dashboard, Daily Log, Projects, Completed Archive
