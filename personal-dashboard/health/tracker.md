@@ -35,7 +35,7 @@
 
 #### Medications
 - [x] Morning insulin/diabetes meds
-- [ ] Evening insulin/diabetes meds
+- [x] Evening insulin/diabetes meds ✅ 19:44
 - [x] Other medications (prescriptions picked up)
 
 #### Nutrition & Hydration
