@@ -399,6 +399,61 @@ header h2 {
     background: #e67e22;
 }
 
+/* Status Indicators */
+.waiting-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 20px;
+    background: rgba(39, 174, 96, 0.05);
+    border: 2px dashed #27ae60;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+    animation: pulse 2s infinite;
+}
+
+.status-indicator.idle {
+    background: #27ae60;
+}
+
+.status-indicator.active {
+    background: #e94560;
+    animation: none;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Header Status Display */
+.status-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.status-text {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.status-text.active {
+    color: #e94560;
+}
+
+.status-text.idle {
+    color: #27ae60;
+}
+
 /* History */
 .history-list {
     display: flex;

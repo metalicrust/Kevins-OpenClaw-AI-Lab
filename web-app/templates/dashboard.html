@@ -29,6 +29,15 @@
         
         <header>
             <h2>Jarvis Work Dashboard</h2>
+            <div class="status-display">
+                {% if today_log.doing %}
+                    <span class="status-indicator active"></span>
+                    <span class="status-text active">Working on {{ today_log.doing|length }} task(s)</span>
+                {% else %}
+                    <span class="status-indicator idle"></span>
+                    <span class="status-text idle">Waiting for new tasks</span>
+                {% endif %}
+            </div>
             <span class="date">{{ today }}</span>
         </header>
         
@@ -76,7 +85,11 @@
                     {% endfor %}
                     </ul>
                 {% else %}
-                    <p class="empty">No active tasks. Pull from Priority Queue!</p>
+                    <div class="waiting-status">
+                        <span class="status-indicator idle"></span>
+                        <p class="empty"><strong>Waiting for new tasks...</strong></p>
+                        <p style="color: #666; font-size: 13px; margin-top: 5px;">Add tasks to Priority Queue to assign work</p>
+                    </div>
                 {% endif %}
                 <a href="{{ url_for('daily_log') }}" class="btn">View My Work Log →</a>
             </div>
