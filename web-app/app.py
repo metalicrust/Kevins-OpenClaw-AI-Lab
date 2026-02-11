@@ -18,6 +18,15 @@ os.makedirs(DATA_DIR, exist_ok=True)
 
 DAILY_LOG_FILE = os.path.join(DATA_DIR, 'daily_logs.json')
 PROJECTS_FILE = os.path.join(DATA_DIR, 'projects.json')
+USAGE_FILE = os.path.join(DATA_DIR, 'usage.json')
+
+# Model pricing (per 1K tokens)
+MODEL_PRICING = {
+    'moonshot/kimi-k2.5': {'input': 0.002, 'output': 0.008},
+    'openai/gpt-4o': {'input': 0.005, 'output': 0.015},
+    'openai/gpt-4o-mini': {'input': 0.00015, 'output': 0.0006},
+    'default': {'input': 0.002, 'output': 0.008}
+}
 
 def load_json(filepath, default=None):
     if default is None:
@@ -45,6 +54,82 @@ def load_projects():
 
 def save_projects(projects):
     save_json(PROJECTS_FILE, projects)
+
+def load_usage():
+    return load_json(USAGE_FILE, {'tasks': {}, 'daily_totals': {}, 'thresholds': {'daily': 5.0, 'task': 1.0}})
+
+def save_usage(usage):
+    save_json(USAGE_FILE, usage)
+
+def estimate_cost(tokens_in, tokens_out, model='default'):
+    """Estimate cost based on token usage and model"""
+    pricing = MODEL_PRICING.get(model, MODEL_PRICING['default'])
+    cost_in = (tokens_in / 1000) * pricing['input']
+    cost_out = (tokens_out / 1000) * pricing['output']
+    return round(cost_in + cost_out, 4)
+
+def log_task_usage(task_ref, tokens_in, tokens_out, model='default'):
+    """Log API usage for a specific task"""
+    usage = load_usage()
+    cost = estimate_cost(tokens_in, tokens_out, model)
+    today = datetime.now().strftime("%Y-%m-%d")
+    
+    if task_ref not in usage['tasks']:
+        usage['tasks'][task_ref] = []
+    
+    usage['tasks'][task_ref].append({
+        'timestamp': datetime.now().isoformat(),
+        'tokens_in': tokens_in,
+        'tokens_out': tokens_out,
+        'model': model,
+        'cost': cost
+    })
+    
+    # Update daily totals
+    if today not in usage['daily_totals']:
+        usage['daily_totals'][today] = {'tokens': 0, 'cost': 0}
+    
+    usage['daily_totals'][today]['tokens'] += tokens_in + tokens_out
+    usage['daily_totals'][today]['cost'] += cost
+    
+    save_usage(usage)
+    return cost
+
+def get_task_usage_summary(task_ref):
+    """Get usage summary for a task"""
+    usage = load_usage()
+    task_data = usage['tasks'].get(task_ref, [])
+    total_tokens = sum(u['tokens_in'] + u['tokens_out'] for u in task_data)
+    total_cost = sum(u['cost'] for u in task_data)
+    models_used = list(set(u['model'] for u in task_data))
+    return {
+        'total_tokens': total_tokens,
+        'total_cost': round(total_cost, 4),
+        'calls': len(task_data),
+        'models': models_used
+    }
+
+def check_thresholds():
+    """Check if usage crosses thresholds and return warnings"""
+    usage = load_usage()
+    today = datetime.now().strftime("%Y-%m-%d")
+    thresholds = usage.get('thresholds', {'daily': 5.0, 'task': 1.0})
+    warnings = []
+    
+    # Check daily threshold
+    daily_cost = usage['daily_totals'].get(today, {}).get('cost', 0)
+    if daily_cost >= thresholds['daily']:
+        warnings.append(f"Daily cost threshold crossed: ${daily_cost:.4f} (limit: ${thresholds['daily']})")
+    elif daily_cost >= thresholds['daily'] * 0.8:
+        warnings.append(f"Daily cost at 80% threshold: ${daily_cost:.4f}")
+    
+    # Check task thresholds
+    for task_ref, calls in usage['tasks'].items():
+        task_cost = sum(c['cost'] for c in calls)
+        if task_cost >= thresholds['task']:
+            warnings.append(f"Task {task_ref} cost threshold crossed: ${task_cost:.4f}")
+    
+    return warnings
 
 def get_or_create_today_log():
     today = datetime.now().strftime("%Y-%m-%d")
@@ -346,6 +431,71 @@ def search_completed():
                          results=results,
                          query=query,
                          count=len(results))
+
+# API USAGE & COST TRACKING
+@app.route('/usage')
+def usage_dashboard():
+    """Display API usage and cost dashboard"""
+    usage = load_usage()
+    today = datetime.now().strftime("%Y-%m-%d")
+    
+    # Get today's stats
+    today_stats = usage['daily_totals'].get(today, {'tokens': 0, 'cost': 0})
+    
+    # Get all daily totals sorted by date
+    daily_history = []
+    for date, stats in sorted(usage['daily_totals'].items(), reverse=True)[:30]:
+        daily_history.append({
+            'date': date,
+            'tokens': stats['tokens'],
+            'cost': round(stats['cost'], 4)
+        })
+    
+    # Get task summaries
+    task_summaries = []
+    for task_ref, calls in usage['tasks'].items():
+        summary = get_task_usage_summary(task_ref)
+        task_summaries.append({
+            'ref': task_ref,
+            **summary
+        })
+    task_summaries.sort(key=lambda x: x['total_cost'], reverse=True)
+    
+    # Check thresholds
+    warnings = check_thresholds()
+    thresholds = usage.get('thresholds', {'daily': 5.0, 'task': 1.0})
+    
+    return render_template('usage.html',
+                         today_stats=today_stats,
+                         daily_history=daily_history,
+                         task_summaries=task_summaries,
+                         warnings=warnings,
+                         thresholds=thresholds,
+                         model_pricing=MODEL_PRICING)
+
+@app.route('/usage/log', methods=['POST'])
+def log_usage():
+    """Log API usage for a task"""
+    task_ref = request.form.get('task_ref')
+    tokens_in = int(request.form.get('tokens_in', 0))
+    tokens_out = int(request.form.get('tokens_out', 0))
+    model = request.form.get('model', 'default')
+    
+    cost = log_task_usage(task_ref, tokens_in, tokens_out, model)
+    flash(f'Logged usage for {task_ref}: ${cost:.4f}', 'success')
+    return redirect(url_for('usage_dashboard'))
+
+@app.route('/usage/thresholds', methods=['POST'])
+def update_thresholds():
+    """Update usage thresholds"""
+    usage = load_usage()
+    usage['thresholds'] = {
+        'daily': float(request.form.get('daily_threshold', 5.0)),
+        'task': float(request.form.get('task_threshold', 1.0))
+    }
+    save_usage(usage)
+    flash('Thresholds updated', 'success')
+    return redirect(url_for('usage_dashboard'))
 
 if __name__ == '__main__':
     print("🚀 Agent Dashboard - All Features")

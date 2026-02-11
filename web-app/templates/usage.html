@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Usage & Costs - Jarvis Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>🤖 Jarvis Dashboard</h1>
+        <p style="color: #666; font-size: 12px; margin: -20px 0 20px 0;">Agent Work Tracker</p>
+        <a href="{{ url_for('dashboard') }}" class="nav-item">📊 Dashboard</a>
+        <a href="{{ url_for('daily_log') }}" class="nav-item">📝 My Work Log</a>
+        <a href="{{ url_for('projects_list') }}" class="nav-item">📁 Active Projects</a>
+        <a href="{{ url_for('completed_archive') }}" class="nav-item">✅ Completed Work</a>
+        <a href="{{ url_for('usage_dashboard') }}" class="nav-item active">💰 API Usage</a>
+        <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
+    </nav>
+    
+    <main class="main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <header>
+            <h2>💰 API Usage & Cost Tracking</h2>
+            <span class="date">{{ today }}</span>
+        </header>
+        
+        <!-- Warnings -->
+        {% if warnings %}
+        <div class="card" style="border: 2px solid #e94560;">
+            <h3>⚠️ Threshold Warnings</h3>
+            {% for warning in warnings %}
+                <p style="color: #e94560; margin: 5px 0;">{{ warning }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Today's Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">Today's Tokens</div>
+                <div class="stat-number">{{ today_stats.tokens }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Today's Cost</div>
+                <div class="stat-number">${{ "%.4f"|format(today_stats.cost) }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Daily Threshold</div>
+                <div class="stat-number">${{ thresholds.daily }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Task Threshold</div>
+                <div class="stat-number">${{ thresholds.task }}</div>
+            </div>
+        </div>
+        
+        <div class="dashboard-content">
+            <!-- Task Summaries -->
+            <div class="card">
+                <h3>📊 Task Usage Summary</h3>
+                {% if task_summaries %}
+                    <table class="project-table">
+                        <thead>
+                            <tr>
+                                <th>Task</th>
+                                <th>Calls</th>
+                                <th>Tokens</th>
+                                <th>Total Cost</th>
+                                <th>Models Used</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for task in task_summaries %}
+                            <tr>
+                                <td><strong>{{ task.ref }}</strong></td>
+                                <td>{{ task.calls }}</td>
+                                <td>{{ task.total_tokens }}</td>
+                                <td style="color: {% if task.total_cost >= thresholds.task %}#e94560{% else %}#27ae60{% endif %};">
+                                    ${{ "%.4f"|format(task.total_cost) }}
+                                </td>
+                                <td>{{ task.models|join(', ') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="empty">No usage data yet. Log usage for tasks to see stats here.</p>
+                {% endif %}
+            </div>
+            
+            <!-- Daily History -->
+            <div class="card">
+                <h3>📅 Daily Usage History (Last 30 Days)</h3>
+                {% if daily_history %}
+                    <table class="project-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Total Tokens</th>
+                                <th>Total Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for day in daily_history %}
+                            <tr>
+                                <td>{{ day.date }}</td>
+                                <td>{{ day.tokens }}</td>
+                                <td style="color: {% if day.cost >= thresholds.daily %}#e94560{% else %}#27ae60{% endif %};">
+                                    ${{ "%.4f"|format(day.cost) }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="empty">No daily usage data yet.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Log Usage Form -->
+        <div class="card" style="margin-top: 30px;">
+            <h3>📝 Log API Usage</h3>
+            <form action="{{ url_for('log_usage') }}" method="post" class="add-task-form">
+                <input type="text" name="task_ref" placeholder="Task Reference (e.g., REF-002)" required class="form-input" style="flex: 1;">
+                <input type="number" name="tokens_in" placeholder="Input Tokens" required class="form-input" style="width: 120px;">
+                <input type="number" name="tokens_out" placeholder="Output Tokens" required class="form-input" style="width: 120px;">
+                <select name="model" class="form-input" style="width: 150px;">
+                    {% for model, pricing in model_pricing.items() %}
+                        {% if model != 'default' %}
+                            <option value="{{ model }}">{{ model }}</option>
+                        {% endif %}
+                    {% endfor %}
+                    <option value="default">Default</option>
+                </select>
+                <button type="submit" class="btn">Log Usage</button>
+            </form>
+        </div>
+        
+        <!-- Threshold Settings -->
+        <div class="card" style="margin-top: 20px;">
+            <h3>⚙️ Threshold Settings</h3>
+            <form action="{{ url_for('update_thresholds') }}" method="post" class="add-task-form">
+                <label style="color: #888; margin-right: 10px;">Daily Limit: $</label>
+                <input type="number" name="daily_threshold" value="{{ thresholds.daily }}" step="0.01" class="form-input" style="width: 100px;">
+                <label style="color: #888; margin: 0 10px 0 20px;">Per-Task Limit: $</label>
+                <input type="number" name="task_threshold" value="{{ thresholds.task }}" step="0.01" class="form-input" style="width: 100px;">
+                <button type="submit" class="btn">Update Thresholds</button>
+            </form>
+        </div>
+        
+        <!-- Model Pricing -->
+        <div class="card" style="margin-top: 20px;">
+            <h3>💵 Model Pricing (per 1K tokens)</h3>
+            <table class="project-table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Input Cost</th>
+                        <th>Output Cost</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for model, pricing in model_pricing.items() %}
+                    {% if model != 'default' %}
+                    <tr>
+                        <td>{{ model }}</td>
+                        <td>${{ "%.4f"|format(pricing.input) }}</td>
+                        <td>${{ "%.4f"|format(pricing.output) }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
