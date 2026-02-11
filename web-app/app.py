@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Agent Dashboard Web App - All Features
-Tracks agent work: daily logs, projects, completed archive
+Agent Dashboard Web App - Jarvis Work Tracking
+Tracks what I'm doing for Kevin: my tasks, projects I'm working on, completed work
 """
 
 import json

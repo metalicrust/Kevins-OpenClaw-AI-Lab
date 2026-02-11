@@ -1,7 +1,9 @@
 {
   "2026-02-10": {
     "date": "2026-02-10",
-    "doing": [],
+    "doing": [
+      "Add documentation and user's guide"
+    ],
     "completed": [],
     "next": [],
     "notes": ""
