@@ -14,7 +14,44 @@
 
 ## 🎯 Daily Tracking
 
-### Today (2026-02-09 - Monday)
+### 2026-02-10 - Tuesday
+
+**Day:** [ ] Mon [x] Tue [ ] Wed [ ] Thu [ ] Fri [ ] Sat [ ] Sun
+
+#### Exercise
+- [x] Treadmill completed ✅
+- Duration: 30 minutes (Goal: 30) ✅
+- Distance: ___ miles/km
+- Calories burned: ___
+- Notes: Done at 19:39
+
+#### Health Metrics
+- Weight: ___ lbs
+- Blood sugar (morning/fasting): ___ mg/dL
+- Blood sugar (evening): ___ mg/dL
+- Energy level: [1-2-3-4-5-6-7-8-9-10]
+- Sleep quality: [1-2-3-4-5-6-7-8-9-10]
+- Mood: [ ] Great [ ] Good [ ] Okay [ ] Low
+
+#### Medications
+- [x] Morning insulin/diabetes meds
+- [ ] Evening insulin/diabetes meds
+- [x] Other medications (prescriptions picked up)
+
+#### Nutrition & Hydration
+- Water intake: ___ oz/glasses
+- Meals tracked: [ ] Yes [ ] No
+- Protein: [ ] Adequate [ ] Low
+- Vegetables: [ ] 3+ servings [ ] < 3 servings
+
+#### Body Check-in
+Any symptoms, concerns, or wins:
+- Prescriptions picked up ✅
+- Treadmill goal met! ✅
+
+---
+
+### 2026-02-09 - Monday
 
 **Day:** [x] Mon [ ] Tue [ ] Wed [ ] Thu [ ] Fri [ ] Sat [ ] Sun
 
