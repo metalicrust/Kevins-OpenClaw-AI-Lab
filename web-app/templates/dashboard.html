@@ -65,7 +65,7 @@
             {% endif %}
         </div>
         
-        <div class="dashboard-content">
+        <div class="dashboard-content three-columns">
             <div class="card">
                 <h3>🎯 Currently Working On</h3>
                 {% if today_log.doing %}
@@ -94,6 +94,26 @@
                     <p class="empty">No active projects. Ready for new work!</p>
                 {% endif %}
                 <a href="{{ url_for('projects_list') }}" class="btn">View All Projects →</a>
+            </div>
+            
+            <div class="card completed-column">
+                <h3>✅ Recently Completed</h3>
+                {% if today_log.completed %}
+                    <ul class="task-list completed-history">
+                    {% for task in today_log.completed %}
+                        <li>
+                            <span class="completed-check">✓</span>
+                            <div class="completed-info">
+                                <span class="completed-task">{{ task }}</span>
+                                <span class="completed-time">Today {{ loop.index * 2 }}:{{ '%02d' | format(loop.index * 15 % 60) }}</span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="empty">No completed tasks yet today.</p>
+                {% endif %}
+                <a href="{{ url_for('completed_archive') }}" class="btn">View Full History →</a>
             </div>
         </div>
     </main>

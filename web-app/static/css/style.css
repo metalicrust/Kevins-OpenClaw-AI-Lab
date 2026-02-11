@@ -541,6 +541,63 @@ header h2 {
     flex-shrink: 0;
 }
 
+/* Three Column Layout */
+.three-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Completed Column Styles */
+.completed-column {
+    background: #16213e;
+}
+
+.completed-column h3 {
+    color: #27ae60;
+}
+
+.completed-history {
+    list-style: none;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.completed-history li {
+    display: flex;
+    align-items: flex-start;
+    padding: 12px;
+    background: #1a1a2e;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    border: 1px solid #0f3460;
+}
+
+.completed-check {
+    color: #27ae60;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.completed-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.completed-task {
+    color: #eee;
+    font-size: 14px;
+    text-decoration: line-through;
+    opacity: 0.8;
+}
+
+.completed-time {
+    color: #666;
+    font-size: 11px;
+    margin-top: 4px;
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
     .stats-grid {
@@ -554,6 +611,10 @@ header h2 {
     .dashboard-content {
         grid-template-columns: 1fr;
     }
+    
+    .three-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
@@ -566,6 +627,10 @@ header h2 {
     }
     
     .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .three-columns {
         grid-template-columns: 1fr;
     }
     
