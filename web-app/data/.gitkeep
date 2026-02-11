@@ -1,0 +1,12 @@
+# Data Directory
+
+This directory stores local data files that are NOT tracked in git.
+
+Files in this directory:
+- daily_logs.json - Task tracking data
+- projects.json - Project data
+- usage.json - API usage tracking
+
+These files contain personal/sensitive information and should not be committed.
+
+The .gitignore file excludes *.json files in this directory.
