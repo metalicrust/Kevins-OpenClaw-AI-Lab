@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results - Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>🤖 Agent Dashboard</h1>
+        <a href="{{ url_for('dashboard') }}" class="nav-item">📊 Dashboard</a>
+        <a href="{{ url_for('daily_log') }}" class="nav-item">📝 Daily Log</a>
+        <a href="#" class="nav-item">📁 Projects</a>
+        <a href="{{ url_for('completed_archive') }}" class="nav-item active">✅ Completed</a>
+        <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
+    </nav>
+    
+    <main class="main">
+        <header>
+            <h2>Search Completed Tasks</h2>
+            <a href="{{ url_for('completed_archive') }}" class="btn">← Back to Archive</a>
+        </header>
+        
+        <!-- Search Form -->
+        <div class="search-section">
+            <form action="{{ url_for('search_completed') }}" method="GET" class="search-form">
+                <input type="text" name="q" value="{{ query }}" placeholder="Search completed tasks..." class="search-input">
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+        
+        <!-- Results -->
+        <div class="content-section">
+            <h3>Results for "{{ query }}" ({{ count }} found)</h3>
+            
+            {% if results %}
+                <div class="search-results">
+                    {% for result in results %}
+                    <div class="result-item">
+                        <div class="result-meta">
+                            <span class="result-date">{{ result.date }}</span>
+                            <span class="result-day">{{ result.day_of_week }}</span>
+                        </div>
+                        <div class="result-task">{{ result.task }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>No tasks found matching "{{ query }}"</p>
+                    <p>Try a different search term</p>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>
