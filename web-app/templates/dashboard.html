@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="30">
     <title>Jarvis Agent Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
 </head>
 <body>
     <nav class="sidebar">
@@ -39,6 +41,7 @@
                 {% endif %}
             </div>
             <span class="date">{{ today }}</span>
+            <span class="last-updated">Updated: <span id="lastUpdated">{{ now }}</span> (auto-refreshes every 30s)</span>
         </header>
         
         <div class="stats-grid">
@@ -131,5 +134,45 @@
             </div>
         </div>
     </main>
+    
+    <div class="keyboard-help">
+        <h4>⌨️ Shortcuts</h4>
+        <p><kbd>D</kbd> Daily Log</p>
+        <p><kbd>P</kbd> Projects</p>
+        <p><kbd>C</kbd> Completed</p>
+        <p><kbd>R</kbd> Refresh</p>
+    </div>
+    
+    <script>
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            switch(e.key.toLowerCase()) {
+                case 'd':
+                    window.location.href = '{{ url_for('daily_log') }}';
+                    break;
+                case 'p':
+                    window.location.href = '{{ url_for('projects_list') }}';
+                    break;
+                case 'c':
+                    window.location.href = '{{ url_for('completed_archive') }}';
+                    break;
+                case 'r':
+                    window.location.reload();
+                    break;
+            }
+        });
+        
+        // Update timestamp
+        function updateTimestamp() {
+            const now = new Date();
+            const timeStr = now.toTimeString().slice(0, 8);
+            document.getElementById('lastUpdated').textContent = timeStr;
+        }
+        
+        // Update every second
+        setInterval(updateTimestamp, 1000);
+    </script>
 </body>
 </html>
