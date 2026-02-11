@@ -485,6 +485,43 @@ header h2 {
     background: #e67e22;
 }
 
+/* Last Updated Timestamp */
+.last-updated {
+    font-size: 12px;
+    color: #666;
+    margin-left: 20px;
+    font-family: monospace;
+}
+
+/* Keyboard Shortcuts Help */
+.keyboard-help {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #16213e;
+    border: 1px solid #0f3460;
+    border-radius: 8px;
+    padding: 15px;
+    font-size: 12px;
+    color: #888;
+    max-width: 250px;
+    z-index: 100;
+}
+
+.keyboard-help h4 {
+    margin: 0 0 10px 0;
+    color: #eee;
+    font-size: 13px;
+}
+
+.keyboard-help kbd {
+    background: #0f3460;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    color: #ccc;
+}
+
 /* Status Indicators */
 .waiting-status {
     display: flex;

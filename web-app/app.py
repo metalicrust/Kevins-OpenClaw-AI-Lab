@@ -187,8 +187,11 @@ def dashboard():
     active_projects = len([p for p in projects if p.get('status') != 'completed'])
     recent_projects = sorted(projects, key=lambda x: x.get('updated', ''), reverse=True)[:5]
     
+    now = datetime.now().strftime("%H:%M:%S")
+    
     return render_template('dashboard.html',
                          today=today,
+                         now=now,
                          today_log=today_log,
                          total_completed=total_completed,
                          active_projects=active_projects,
