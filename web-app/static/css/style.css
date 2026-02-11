@@ -319,6 +319,92 @@ header h2 {
     display: inline;
 }
 
+/* Project Form Styles */
+.project-form {
+    max-width: 800px;
+    background: #16213e;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #0f3460;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: #eee;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 15px;
+    background: #1a1a2e;
+    border: 2px solid #0f3460;
+    border-radius: 8px;
+    color: #eee;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #e94560;
+}
+
+.form-textarea {
+    width: 100%;
+    padding: 15px;
+    background: #1a1a2e;
+    border: 2px solid #0f3460;
+    border-radius: 8px;
+    color: #eee;
+    font-size: 16px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 120px;
+    transition: border-color 0.3s;
+}
+
+.form-textarea:focus {
+    outline: none;
+    border-color: #e94560;
+}
+
+.form-select {
+    width: 100%;
+    padding: 15px;
+    background: #1a1a2e;
+    border: 2px solid #0f3460;
+    border-radius: 8px;
+    color: #eee;
+    font-size: 16px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #e94560;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #0f3460;
+}
+
+.form-actions .btn {
+    padding: 12px 30px;
+    font-size: 16px;
+}
+
 /* Task Reference Numbers & Priority */
 .task-info {
     display: flex;

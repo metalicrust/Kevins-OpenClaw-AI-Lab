@@ -484,6 +484,24 @@ def project_toggle_task(project_id, task_id):
     
     return redirect(url_for('project_detail', project_id=project_id))
 
+@app.route('/projects/<int:project_id>/task/<int:task_id>/delete', methods=['POST'])
+def project_delete_task(project_id, task_id):
+    project, idx = get_project_by_id(project_id)
+    if project is None:
+        flash('Project not found', 'error')
+        return redirect(url_for('projects_list'))
+    
+    # Remove task with matching ID
+    project['tasks'] = [t for t in project.get('tasks', []) if t.get('id') != task_id]
+    project['updated'] = datetime.now().isoformat()
+    
+    projects = load_projects()
+    projects[idx] = project
+    save_projects(projects)
+    flash('Task deleted', 'success')
+    
+    return redirect(url_for('project_detail', project_id=project_id))
+
 @app.route('/projects/<int:project_id>/delete', methods=['POST'])
 def project_delete(project_id):
     projects = load_projects()
