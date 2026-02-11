@@ -1,25 +1,23 @@
-# 🎯 Personal Reminders - Kevin
+# 🎯 Personal Reminders - [NAME]
 
-**Last Updated:** 2026-02-10  
-**Timezone:** America/Los_Angeles (PST)
+**Last Updated:** YYYY-MM-DD  
+**Timezone:** [TIMEZONE]
 
 ---
 
 ## 🎬 Movie Nights
 
-**Schedule:** Mondays & Wednesdays (in Gilroy)  
+**Schedule:** Mondays & Wednesdays  
 **Frequency:** 1-2x per month  
 **Genres:** Sci-fi, action, martial arts
 
-### This Week (Feb 9-15)
-- [ ] Monday, Feb 10 — Movie night in Gilroy
-- [ ] Wednesday, Feb 11 — Movie night in Gilroy
+### This Week
+- [ ] Monday — Movie night
+- [ ] Wednesday — Movie night
 
 ### Upcoming Movie Nights
-- [ ] Monday, Feb 17
-- [ ] Wednesday, Feb 19
-- [ ] Monday, Feb 24
-- [ ] Wednesday, Feb 26
+- [ ] Monday
+- [ ] Wednesday
 
 ### Movies to Watch (Wishlist)
 - [ ] Dune: Part Two (if still playing)
@@ -28,8 +26,8 @@
 - [ ] Martial arts films
 
 ### Movie Night Checklist
-- [ ] Check showtimes (Mon/Wed)
-- [ ] Confirm theater location (Gilroy)
+- [ ] Check showtimes
+- [ ] Confirm theater location
 - [ ] Plan transportation
 - [ ] Bring jacket (evenings can be cool)
 
@@ -40,24 +38,24 @@
 ### This Week
 | Date | Day | Event | Notes |
 |------|-----|-------|-------|
-| Feb 10 | Mon | Movie night | Gilroy |
-| Feb 11 | Wed | Movie night | Gilroy |
-| Feb 11 | Wed | Content due | MindMorsels Slot 1 |
-| Feb 13 | Thu | **Drop off Toyota Sienna at Autoworks** | **Before 9:00 AM** |
-| Feb 15 | Sun | Weekly review | Health + Content + Crypto |
+| | Mon | Movie night | |
+| | Wed | Movie night | |
+| | Wed | Content due | MindMorsels Slot 1 |
+| | Thu | **Vehicle maintenance** | **Before 9:00 AM** |
+| | Sun | Weekly review | Health + Content + Crypto |
 
 ### Next Week
 | Date | Day | Event | Notes |
 |------|-----|-------|-------|
-| Feb 17 | Mon | Movie night | Gilroy |
-| Feb 19 | Wed | Movie night | Gilroy |
-| Feb 19 | Wed | Content due | MindMorsels Slot 1 |
-| Feb 22 | Sat | Content due | MindMorsels Slot 2 |
-| Feb 23 | Sun | Content due | MindMorsels Slot 3 |
+| | Mon | Movie night | |
+| | Wed | Movie night | |
+| | Wed | Content due | MindMorsels Slot 1 |
+| | Sat | Content due | MindMorsels Slot 2 |
+| | Sun | Content due | MindMorsels Slot 3 |
 
 ### This Month
 - [ ] Feb 14 — Valentine's Day (content angle?)
-- [ ] Feb 28 — End of month review
+- [ ] End of month review
 
 ### Recurring Reminders
 - **Daily:** 30 min treadmill (by 8 PM)
@@ -72,20 +70,17 @@
 
 ### Health Goals (HIGH PRIORITY)
 - [ ] **Daily:** 30 minutes treadmill
-- [ ] **Target:** Lose 30-40 lbs
-- [ ] **Manage:** Type 1 diabetes
-- [ ] **Recovery:** Post-prostate cancer monitoring
+- [ ] **Target:** Weight management
+- [ ] **Manage:** Health conditions
+- [ ] **Recovery:** Ongoing health monitoring
 
 #### Health Milestones
 | Milestone | Target Date | Status |
 |-----------|-------------|--------|
-| 7-day treadmill streak | Feb 16 | ⏳ |
-| 14-day treadmill streak | Feb 23 | ⏳ |
-| 30-day treadmill streak | Mar 11 | ⏳ |
-| 10 lb weight loss | Mar 9 | ⏳ |
-| 20 lb weight loss | May 11 | ⏳ |
-| 30 lb weight loss | Jul 13 | ⏳ |
-| 40 lb weight loss | Sep 14 | ⏳ |
+| 7-day treadmill streak | | ⏳ |
+| 14-day treadmill streak | | ⏳ |
+| 30-day treadmill streak | | ⏳ |
+| Weight goal 1 | | ⏳ |
 
 ### Business Goals (HIGH PRIORITY)
 - [ ] **MindMorsels.ai:** Grow to $10K/month
@@ -96,15 +91,15 @@
 #### Business Milestones
 | Milestone | Target | Status |
 |-----------|--------|--------|
-| 3x/week content (1 month) | Mar 9 | ⏳ |
-| 1,000 TikTok followers | Mar 31 | ⏳ |
-| 10,000 TikTok followers | Jun 30 | ⏳ |
-| First $1K from MindMorsels | Apr 30 | ⏳ |
-| First $5K/month | Aug 31 | ⏳ |
-| $10K/month (goal) | Dec 31 | ⏳ |
+| 3x/week content (1 month) | | ⏳ |
+| 1,000 followers | | ⏳ |
+| 10,000 followers | | ⏳ |
+| First $1K | | ⏳ |
+| First $5K/month | | ⏳ |
+| $10K/month (goal) | | ⏳ |
 
 ### Fun & Lifestyle
-- [ ] **Movie nights:** 2x per week (Mon/Wed)
+- [ ] **Movie nights:** 2x per week
 - [ ] **Fishing trip:** Plan for spring
 - [ ] **Boating:** Summer activity
 - [ ] **Bowling:** Monthly with friends?
@@ -131,15 +126,12 @@
 ## 🏆 Recent Wins & Celebrations
 
 ### This Week's Wins
-- [x] Set up GitHub integration for Jarvis
-- [x] Created dashboard system
-- [x] Built Day Organizer app
-- [x] Created GSD skill
+- [ ] 
 
 ### Milestones Achieved
 | Date | Milestone | Celebration |
 |------|-----------|-------------|
-| Feb 9 | First day with AI assistant | 🎉 |
+| | | |
 
 ---
 
@@ -147,8 +139,8 @@
 
 ### Daily Tools
 - **Day Organizer app:** http://localhost:5050
-- **Dashboard:** ~/workspace/projects/lab-repo/
-- **GitHub:** github.com/metalicrust
+- **Dashboard:** Local workspace
+- **GitHub:** [REPO]
 
 ### Health Tracking
 - Blood sugar monitor
@@ -170,27 +162,25 @@
 ## 💡 Quick Reference
 
 ### Important Info
-- **Location:** Gilroy, Northern California
-- **Timezone:** PST (America/Los_Angeles)
-- **Interests:** Bashar teachings, UFOs/NHI, sci-fi
-- **Education:** Master's in Science & Technology
+- **Location:** [LOCATION]
+- **Timezone:** [TIMEZONE]
+- **Interests:** [INTERESTS]
+- **Education:** [EDUCATION]
 
 ### Emergency Contacts
 - 
 
 ### Medical Info
-- Type 1 diabetes
-- Post-prostate cancer monitoring
-- 
+- [REDACTED - Keep local only]
 
 ---
 
 ## 🎬 Action Items for This Week
 
-### By Tomorrow (Feb 10)
+### By Tomorrow
 - [ ] 
 
-### By End of Week (Feb 15)
+### By End of Week
 - [ ] Complete 3 content pieces
 - [ ] 7/7 treadmill days
 - [ ] Daily crypto check-ins
@@ -203,4 +193,4 @@
 
 ---
 
-*Remember: Balance health, business, and fun. Movie nights are sacred!* 🎬
+*Remember: Balance health, business, and fun.*
