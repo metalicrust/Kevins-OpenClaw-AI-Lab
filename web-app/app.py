@@ -131,6 +131,27 @@ def check_thresholds():
     
     return warnings
 
+def generate_task_ref():
+    """Generate next task reference number"""
+    logs = load_daily_logs()
+    max_ref = 0
+    for log in logs.values():
+        for task_list in [log.get('doing', []), log.get('next', []), log.get('completed', [])]:
+            for task in task_list:
+                if isinstance(task, dict) and 'ref' in task:
+                    try:
+                        ref_num = int(task['ref'].replace('REF-', ''))
+                        max_ref = max(max_ref, ref_num)
+                    except:
+                        pass
+                elif isinstance(task, str) and task.startswith('[REF-'):
+                    try:
+                        ref_num = int(task.split(']')[0].replace('[REF-', ''))
+                        max_ref = max(max_ref, ref_num)
+                    except:
+                        pass
+    return f"REF-{max_ref + 1:03d}"
+
 def get_or_create_today_log():
     today = datetime.now().strftime("%Y-%m-%d")
     logs = load_daily_logs()
@@ -183,6 +204,7 @@ def daily_log():
 def add_task():
     section = request.form.get('section', 'doing')
     task = request.form.get('task', '').strip()
+    priority = request.form.get('priority', 'medium')  # high, medium, low
     
     if task:
         logs = load_daily_logs()
@@ -191,10 +213,23 @@ def add_task():
         if today not in logs:
             logs[today] = {"date": today, "doing": [], "completed": [], "next": [], "notes": ""}
         
+        # Generate reference number
+        ref = generate_task_ref()
+        
+        # Create task object with reference
+        task_obj = {
+            'ref': ref,
+            'text': task,
+            'priority': priority,
+            'created': datetime.now().isoformat(),
+            'started': None,
+            'stopped': None
+        }
+        
         if section in logs[today]:
-            logs[today][section].append(task)
+            logs[today][section].append(task_obj)
             save_daily_logs(logs)
-            flash(f'Task added to {section}', 'success')
+            flash(f'Task {ref} added to {section}', 'success')
     else:
         flash('Task cannot be empty', 'error')
     
@@ -202,7 +237,7 @@ def add_task():
 
 @app.route('/daily-log/move', methods=['POST'])
 def move_task():
-    task = request.form.get('task', '')
+    task_ref = request.form.get('task_ref', '')
     from_section = request.form.get('from_section', '')
     to_section = request.form.get('to_section', '')
     
@@ -210,27 +245,112 @@ def move_task():
     today = datetime.now().strftime("%Y-%m-%d")
     
     if today in logs and from_section in logs[today] and to_section in logs[today]:
-        if task in logs[today][from_section]:
-            logs[today][from_section].remove(task)
-            logs[today][to_section].append(task)
+        # Find task by reference
+        task_obj = None
+        for i, t in enumerate(logs[today][from_section]):
+            if isinstance(t, dict) and t.get('ref') == task_ref:
+                task_obj = logs[today][from_section].pop(i)
+                break
+            elif isinstance(t, str) and task_ref in t:
+                task_obj = logs[today][from_section].pop(i)
+                break
+        
+        if task_obj:
+            logs[today][to_section].append(task_obj)
             save_daily_logs(logs)
-            flash(f'Task moved to {to_section}', 'success')
+            flash(f'Task {task_ref} moved to {to_section}', 'success')
     
     return redirect(url_for('daily_log'))
 
 @app.route('/daily-log/delete', methods=['POST'])
 def delete_task():
-    task = request.form.get('task', '')
+    task_ref = request.form.get('task_ref', '')
     section = request.form.get('section', '')
     
     logs = load_daily_logs()
     today = datetime.now().strftime("%Y-%m-%d")
     
     if today in logs and section in logs[today]:
-        if task in logs[today][section]:
-            logs[today][section].remove(task)
-            save_daily_logs(logs)
-            flash('Task deleted', 'success')
+        # Find task by reference
+        for i, task in enumerate(logs[today][section]):
+            if isinstance(task, dict) and task.get('ref') == task_ref:
+                logs[today][section].pop(i)
+                save_daily_logs(logs)
+                flash(f'Task {task_ref} deleted', 'success')
+                break
+    
+    return redirect(url_for('daily_log'))
+
+@app.route('/daily-log/reorder', methods=['POST'])
+def reorder_task():
+    """Move task up or down in priority queue"""
+    task_ref = request.form.get('task_ref', '')
+    direction = request.form.get('direction', '')  # 'up' or 'down'
+    section = request.form.get('section', 'next')  # usually 'next' for priority queue
+    
+    logs = load_daily_logs()
+    today = datetime.now().strftime("%Y-%m-%d")
+    
+    if today in logs and section in logs[today]:
+        tasks = logs[today][section]
+        # Find task index
+        idx = None
+        for i, task in enumerate(tasks):
+            if isinstance(task, dict) and task.get('ref') == task_ref:
+                idx = i
+                break
+        
+        if idx is not None:
+            if direction == 'up' and idx > 0:
+                tasks[idx], tasks[idx-1] = tasks[idx-1], tasks[idx]
+                save_daily_logs(logs)
+                flash(f'Task {task_ref} moved up', 'success')
+            elif direction == 'down' and idx < len(tasks) - 1:
+                tasks[idx], tasks[idx+1] = tasks[idx+1], tasks[idx]
+                save_daily_logs(logs)
+                flash(f'Task {task_ref} moved down', 'success')
+    
+    return redirect(url_for('daily_log'))
+
+@app.route('/daily-log/stop', methods=['POST'])
+def stop_task():
+    """Stop a currently doing task and return it to priority queue"""
+    task_ref = request.form.get('task_ref', '')
+    
+    logs = load_daily_logs()
+    today = datetime.now().strftime("%Y-%m-%d")
+    
+    if today in logs:
+        # Find in doing
+        for i, task in enumerate(logs[today].get('doing', [])):
+            if isinstance(task, dict) and task.get('ref') == task_ref:
+                task['stopped'] = datetime.now().isoformat()
+                logs[today]['doing'].pop(i)
+                logs[today]['next'].append(task)
+                save_daily_logs(logs)
+                flash(f'Task {task_ref} stopped and returned to queue', 'success')
+                break
+    
+    return redirect(url_for('daily_log'))
+
+@app.route('/daily-log/start', methods=['POST'])
+def start_task():
+    """Start a task from priority queue"""
+    task_ref = request.form.get('task_ref', '')
+    
+    logs = load_daily_logs()
+    today = datetime.now().strftime("%Y-%m-%d")
+    
+    if today in logs:
+        # Find in next
+        for i, task in enumerate(logs[today].get('next', [])):
+            if isinstance(task, dict) and task.get('ref') == task_ref:
+                task['started'] = datetime.now().isoformat()
+                logs[today]['next'].pop(i)
+                logs[today]['doing'].append(task)
+                save_daily_logs(logs)
+                flash(f'Task {task_ref} started', 'success')
+                break
     
     return redirect(url_for('daily_log'))
 
