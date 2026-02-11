@@ -7,7 +7,7 @@ Tracks agent work: daily logs, projects, completed archive
 import json
 import os
 from datetime import datetime, timedelta
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
 app.secret_key = 'agent-dashboard-secret-key'
