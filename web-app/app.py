@@ -10,7 +10,8 @@ from datetime import datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for, flash
 
 app = Flask(__name__)
-app.secret_key = 'agent-dashboard-secret-key'
+# Use environment variable for secret key, fallback to random for development
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', os.urandom(32))
 
 # Data directory
 DATA_DIR = os.path.join(os.path.dirname(__file__), 'data')
