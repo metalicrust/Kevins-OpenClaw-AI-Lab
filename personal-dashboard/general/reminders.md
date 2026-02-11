@@ -13,7 +13,7 @@
 
 ### This Week (Feb 9-15)
 - [ ] Monday, Feb 10 — Movie night in Gilroy
-- [ ] Wednesday, Feb 12 — Movie night in Gilroy
+- [ ] Wednesday, Feb 11 — Movie night in Gilroy
 
 ### Upcoming Movie Nights
 - [ ] Monday, Feb 17
@@ -41,9 +41,9 @@
 | Date | Day | Event | Notes |
 |------|-----|-------|-------|
 | Feb 10 | Mon | Movie night | Gilroy |
-| Feb 12 | Wed | **Drop off Toyota Sienna at Autoworks** | **Before 9:00 AM** |
-| Feb 12 | Wed | Movie night | Gilroy |
-| Feb 12 | Wed | Content due | MindMorsels Slot 1 |
+| Feb 11 | Wed | Movie night | Gilroy |
+| Feb 11 | Wed | Content due | MindMorsels Slot 1 |
+| Feb 13 | Thu | **Drop off Toyota Sienna at Autoworks** | **Before 9:00 AM** |
 | Feb 15 | Sun | Weekly review | Health + Content + Crypto |
 
 ### Next Week
