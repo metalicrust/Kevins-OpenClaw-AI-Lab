@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ project.name }} - Agent Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="sidebar">
+        <h1>🤖 Agent Dashboard</h1>
+        <a href="{{ url_for('dashboard') }}" class="nav-item">📊 Dashboard</a>
+        <a href="{{ url_for('daily_log') }}" class="nav-item">📝 Daily Log</a>
+        <a href="{{ url_for('projects_list') }}" class="nav-item active">📁 Projects</a>
+        <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
+    </nav>
+    
+    <main class="main">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        <div class="project-detail-header">
+            <div>
+                <span class="badge badge-{{ project.priority }}">{{ project.priority }}</span>
+                <span class="status-badge status-{{ project.status }}">{{ project.status.replace('_', ' ') }}</span>
+            </div>
+            <div class="header-actions">
+                <a href="{{ url_for('project_edit', project_id=project.id) }}" class="btn">Edit</a>
+                <form action="{{ url_for('project_delete', project_id=project.id) }}" method="POST" class="inline-form" onsubmit="return confirm('Delete this project?');">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+        
+        <h2>{{ project.name }}</h2>
+        
+        {% if project.goal %}
+        <div class="project-goal-section">
+            <h4>Goal</h4>
+            <p>{{ project.goal }}</p>
+        </div>
+        {% endif %}
+        
+        {% if project.description %}
+        <div class="project-description">
+            <h4>Description</h4>
+            <p>{{ project.description }}</p>
+        </div>
+        {% endif %}
+        
+        <!-- Progress -->
+        {% set completed = project.tasks | selectattr('completed', 'equalto', true) | list | length %}
+        {% set total = project.tasks | length %}
+        <div class="project-progress-section">
+            <h4>Progress</h4>
+            {% if total > 0 %}
+                {% set percent = (completed / total * 100) | int %}
+                <div class="progress-bar-large">
+                    <div class="progress-fill" style="width: {{ percent }}%"></div>
+                </div>
+                <p>{{ completed }} of {{ total }} tasks completed ({{ percent }}%)</p>
+            {% else %}
+                <p>No tasks yet. Add some below!</p>
+            {% endif %}
+        </div>
+        
+        <!-- Tasks -->
+        <div class="project-tasks-section">
+            <h4>Tasks</h4>
+            
+            <!-- Add Task Form -->
+            <form action="{{ url_for('project_add_task', project_id=project.id) }}" method="POST" class="add-task-form">
+                <input type="text" name="task" placeholder="Add a task..." required class="task-input">
+                <button type="submit" class="btn btn-primary">Add Task</button>
+            </form>
+            
+            <!-- Task List -->
+            {% if project.tasks %}
+                <div class="project-task-list">
+                    {% for task in project.tasks %}
+                    <div class="project-task-item {% if task.completed %}completed{% endif %}">
+                        <form action="{{ url_for('project_toggle_task', project_id=project.id, task_id=task.id) }}" method="POST" class="inline-form">
+                            <input type="checkbox" {% if task.completed %}checked{% endif %} onChange="this.form.submit()" class="task-checkbox">
+                        </form>
+                        <span class="task-text {% if task.completed %}completed{% endif %}">{{ task.text }}</span>
+                        <form action="{{ url_for('project_delete_task', project_id=project.id, task_id=task.id) }}" method="POST" class="inline-form" onsubmit="return confirm('Delete task?');">
+                            <button type="submit" class="btn-small btn-danger">×</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty">No tasks yet. Add your first task above!</p>
+            {% endif %}
+        </div>
+        
+        <div class="project-meta-footer">
+            <p>Created: {{ project.created[:10] if project.created else 'Unknown' }}</p>
+            <p>Last updated: {{ project.updated[:10] if project.updated else 'Unknown' }}</p>
+        </div>
+    </main>
+</body>
+</html>

@@ -11,7 +11,7 @@
         <h1>🤖 Agent Dashboard</h1>
         <a href="{{ url_for('dashboard') }}" class="nav-item active">📊 Dashboard</a>
         <a href="{{ url_for('daily_log') }}" class="nav-item">📝 Daily Log</a>
-        <a href="#" class="nav-item">📁 Projects</a>
+        <a href="{{ url_for('projects_list') }}" class="nav-item">📁 Projects</a>
         <a href="{{ url_for('completed_archive') }}" class="nav-item">✅ Completed</a>
         <a href="{{ url_for('log_history') }}" class="nav-item">📚 History</a>
     </nav>
@@ -32,20 +32,20 @@
         
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number">{{ today_log.doing|length }}</div>
                 <div class="stat-label">Currently Doing</div>
+                <div class="stat-number">{{ today_log.doing|length }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ today_log.completed|length }}</div>
                 <div class="stat-label">Completed Today</div>
+                <div class="stat-number">{{ today_log.completed|length }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ today_log.next|length }}</div>
-                <div class="stat-label">Up Next</div>
+                <div class="stat-label">Active Projects</div>
+                <div class="stat-number">{{ active_projects }}</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">{{ total_completed }}</div>
                 <div class="stat-label">Total Completed</div>
+                <div class="stat-number">{{ total_completed }}</div>
             </div>
         </div>
         
@@ -65,16 +65,19 @@
             </div>
             
             <div class="card">
-                <h3>✅ Recently Completed</h3>
-                {% if today_log.completed %}
-                    <ul class="task-list completed">
-                    {% for task in today_log.completed[-5:] %}
-                        <li>{{ task }}</li>
+                <h3>📁 Recent Projects</h3>
+                {% if recent_projects %}
+                    {% for project in recent_projects %}
+                    <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid #0f3460;">
+                        <a href="{{ url_for('project_detail', project_id=project.id) }}" style="color: #eee; text-decoration: none; font-weight: 600;">{{ project.name }}</a>
+                        <span class="badge badge-{{ project.priority }}" style="margin-left: 10px;">{{ project.priority }}</span>
+                        <p style="color: #888; font-size: 13px; margin-top: 5px;">{{ project.goal or 'No goal set' }}</p>
+                    </div>
                     {% endfor %}
-                    </ul>
                 {% else %}
-                    <p class="empty">No completed tasks yet today.</p>
+                    <p class="empty">No projects yet. Create one!</p>
                 {% endif %}
+                <a href="{{ url_for('projects_list') }}" class="btn">View All Projects →</a>
             </div>
         </div>
     </main>
